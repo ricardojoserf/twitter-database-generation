@@ -4,7 +4,7 @@ from tweepy import OAuthHandler
 from textblob import TextBlob
 import csv
 from optparse import OptionParser
-import config
+import config2 as config
 import argparse
 
 
@@ -33,10 +33,11 @@ def get_tweets(query, count, geocode):
         tweets = []
 
         try:
-            for tweet in api.search(q = query,count = count,geocode=geocode):
-
+            counter = 0
+            #for tweet in api.search(q = query,count = count,geocode=geocode):
+            for tweet in tweepy.Cursor(api.search,q = query,geocode=geocode, count=int(count)).items(int(count)):
+                counter+=1
                 parsed_tweet = {}
-
                 parsed_tweet['text'] = tweet.text
                 parsed_tweet['time'] = tweet.created_at
                 parsed_tweet['rts'] = tweet.retweet_count
@@ -57,7 +58,7 @@ def get_tweets(query, count, geocode):
                         tweets.append(parsed_tweet)
                 else:
                     tweets.append(parsed_tweet)
-
+            print("Hemos conseguido "+str(counter)+" tweets")
             return tweets
 
         except ValueError:
