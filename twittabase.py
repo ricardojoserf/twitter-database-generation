@@ -34,8 +34,7 @@ def get_tweets(query, count, geocode):
 
         try:
             counter = 0
-            #for tweet in api.search(q = query,count = count,geocode=geocode):
-            for tweet in tweepy.Cursor(api.search,q = query,geocode=geocode, count=int(count)).items(int(count)):
+            for tweet in tweepy.Cursor(api.search, q = query,geocode=geocode, count=int(count)).items(int(count)):
                 counter+=1
                 parsed_tweet = {}
                 parsed_tweet['text'] = tweet.text
@@ -47,11 +46,11 @@ def get_tweets(query, count, geocode):
                     parsed_tweet['place'] = "NaN"
                 parsed_tweet['user'] = tweet.user.name
                 if tweet.coordinates is not None:
-                    parsed_tweet['lon'] = tweet.coordinates['coordinates'][0]
-                    parsed_tweet['lat'] = tweet.coordinates['coordinates'][1]
+                    parsed_tweet['lon'] = str(tweet.coordinates['coordinates'][0] )
+                    parsed_tweet['lat'] = str(tweet.coordinates['coordinates'][1] )
                 else:
-                    parsed_tweet['lon'] = "NaN"
-                    parsed_tweet['lat'] = "NaN"
+                    parsed_tweet['lon'] = geocode[:geocode.index(",")]
+                    parsed_tweet['lat'] = geocode[(geocode.index(",")+1):][:geocode[(geocode.index(",")+1):].index(",")]
 
                 if tweet.retweet_count > 0:
                     if parsed_tweet not in tweets:
@@ -69,20 +68,23 @@ def get_tweets(query, count, geocode):
 
 def busqueda(query, count, geocode,csvname):
     print("Topic:        {}".format(query))
-    print("Coordinates:  {}".format(geocode))
+    print("Coordinates:  {}".format(geocode) + "\n")
     tweets = get_tweets(query = query, count = count, geocode = geocode)
     csvFile = open(csvname, 'a')
     csvWriter = csv.writer(csvFile)
     csvWriter.writerow(["time","text","user","rts","place","lon","lat"])
     for tweet in tweets:
-        csvWriter.writerow([tweet.get("time"),
-                            tweet.get("text").encode("utf-8"),
-                            tweet.get("user").encode("utf-8"),
-                            tweet.get("rts"),
-                            tweet.get("place"),
-                            tweet.get("lon"),
-                            tweet.get("lat")
-                            ])
+        try:
+            csvWriter.writerow([tweet.get("time"),
+                                tweet.get("text").encode("utf-8"),
+                                tweet.get("user").encode("utf-8"),
+                                tweet.get("rts"),
+                                tweet.get("place"),
+                                tweet.get("lon"),
+                                tweet.get("lat")
+                                ])
+        except:
+            pass
     print(csvname+" generated.")
 
 
