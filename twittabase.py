@@ -4,7 +4,7 @@ from tweepy import OAuthHandler
 from textblob import TextBlob
 import csv
 from optparse import OptionParser
-import config2 as config
+import config
 import argparse
 
 
