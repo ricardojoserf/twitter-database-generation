@@ -57,7 +57,7 @@ def get_tweets(query, count, geocode):
                         tweets.append(parsed_tweet)
                 else:
                     tweets.append(parsed_tweet)
-            print("Hemos conseguido "+str(counter)+" tweets")
+            print("We got "+str(counter)+" tweets")
             return tweets
 
         except ValueError:
