@@ -11,7 +11,7 @@ python twittabase.py -q {query} -l {limit} -g {geocode} -o {output (csv file)}
 python twittabase.py -q "le pen" -l 100 -g "40.432,-3.708,10km" -o aaa.csv
 ```
 
-![Screenshot](images/img1.png)
+![Screenshot](https://i.imgur.com/ijDNoMu.png)
 
 ## Requirements
 
